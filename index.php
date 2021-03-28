@@ -2,6 +2,13 @@
     require 'vendor/autoload.php';
 
     use GuzzleHttp\Client;
+    use GuzzleHttp\HandlerStack;
+    use GuzzleHttp\Middleware;
+    use GuzzleHttp\MessageFormatter;
+
+    use Monolog\Logger;
+    use Monolog\Formatter\LineFormatter;
+    use Monolog\Handler\StreamHandler;
 
     const API_DOC = 'https://docs.thecatapi.com';
     const API_URL = 'https://api.thecatapi.com';
@@ -30,7 +37,15 @@
     ]);
 
     $body = $response->getBody();
+    //$parsed = Request::parseHeader($response);
     $data = json_decode((string)$body); 
+
+    $logger = new Logger('GuzzleLogger');
+    $formatter = new LineFormatter(null, null, false, true);
+    $guzzleHandler = new StreamHandler('logs/guzzle.log');
+    $guzzleHandler->setFormatter($formatter);
+    $logger->pushHandler($guzzleHandler);
+    $logger->debug($body);
 
     var_dump($data);
 
