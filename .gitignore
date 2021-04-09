@@ -1,2 +1,4 @@
 /vendor
 /logs/guzzle.log
+/logs/request.log
+/logs/response.log

@@ -1,5 +1,6 @@
 <?php
     use GuzzleHttp\Client;
+    include('ClientLogger.php');
     
     class AppClient {
         
@@ -12,38 +13,45 @@
 
         private $client;
 
-        public function __constructor() {
+        public function __construct() {
             $this->client = new Client([
                 // Base URI is used with relative requests
-                'base_uri' => API_URL,
+                'base_uri' => self::API_URL,
                 // You can set any number of default request options.
                 'timeout'  => 2.0,
             ]);
         }
     
         public function getRequest() {
-            $response = $client->request('GET', GET_CAT_API_ENDPOINT, [
+            $request = ['method' => 'GET',
+                'base_uri' => self::API_URL, 
+                'endpoint' => self::GET_CAT_API_ENDPOINT, 
+                'parameters' => [
                 //'body' => [],
-                'query' => [
-                    'limit' => '1', 
-                    'size' => 'full'
-                ],
-                'headers' => [
-                    API_HEADER_AUTHENTIFICATION => API_KEY
+                    'query' => [
+                        'limit' => '1', 
+                        'size' => 'full'
+                    ],
+                    'headers' => [
+                        self::API_HEADER_AUTHENTIFICATION => self::API_KEY
+                    ]
                 ]
-            ]);
+            ];       
+
+            $response = $this->client->request($request['method'], $request['endpoint'], $request['parameters']);
+
+            $clientLogger = new ClientLogger();
+            $clientLogger->loggRequest($request);
         
             $body = $response->getBody();
             //$parsed = Request::parseHeader($response);
             $data = json_decode((string)$body); 
         
             //Code for Logger
+            $clientLogger->loggRequest($request);
+            $clientLogger->loggResponse($body);
         
-            var_dump($data);
-        
-            foreach($data as $item) {
-                echo "<img src='".$item->url."'>";
-            }
+            return $data;
         }
     
     }
