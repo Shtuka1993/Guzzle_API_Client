@@ -1,3 +1,3 @@
 <?php
-    const OFFLINE = true;
+    const OFFLINE = false;
 ?>
