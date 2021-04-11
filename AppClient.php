@@ -1,6 +1,7 @@
 <?php
     use GuzzleHttp\Client;
     include('ClientLogger.php');
+    include('Stubber.php');
     
     class AppClient {
         
@@ -21,33 +22,37 @@
         }
     
         public function getRequest() {
-            $request = ['method' => 'GET',
-                'base_uri' => self::API_URL, 
-                'endpoint' => self::GET_CAT_API_ENDPOINT, 
-                'parameters' => [
-                //'body' => [],
-                    'query' => [
-                        'limit' => '1', 
-                        'size' => 'full'
-                    ],
-                    'headers' => [
-                        self::API_HEADER_AUTHENTIFICATION => self::API_KEY
+            if (OFFLINE){
+                $data = [new Stubber()];
+            } else {
+                $request = ['method' => 'GET',
+                    'base_uri' => self::API_URL, 
+                    'endpoint' => self::GET_CAT_API_ENDPOINT, 
+                    'parameters' => [
+                    //'body' => [],
+                        'query' => [
+                            'limit' => '1', 
+                            'size' => 'full'
+                        ],
+                        'headers' => [
+                            self::API_HEADER_AUTHENTIFICATION => self::API_KEY
+                        ]
                     ]
-                ]
-            ];       
+                ];       
 
-            $response = $this->client->request($request['method'], $request['endpoint'], $request['parameters']);
+                $response = $this->client->request($request['method'], $request['endpoint'], $request['parameters']);
 
-            $clientLogger = new ClientLogger();
-            $clientLogger->loggRequest($request);
+                $clientLogger = new ClientLogger();
+                $clientLogger->loggRequest($request);
         
-            $body = $response->getBody();
-            //$parsed = Request::parseHeader($response);
-            $data = json_decode((string)$body); 
+                $body = $response->getBody();
+                //$parsed = Request::parseHeader($response);
+                $data = json_decode((string)$body); 
         
-            $clientLogger->loggRequest($request);
-            $clientLogger->loggResponse($body);
-        
+                $clientLogger->loggRequest($request);
+                $clientLogger->loggResponse($body);
+            }
+
             return $data;
         }
     

@@ -1,4 +1,5 @@
 <?php
+    require 'enviroument.php';
     require 'vendor/autoload.php';
     include('AppClient.php');
 
