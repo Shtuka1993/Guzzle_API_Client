@@ -1,7 +1,9 @@
 <?php
     use GuzzleHttp\Client;
+    use GuzzleHttp\HandlerStack;
     include('ClientLogger.php');
     include('Stubber.php');
+    include('CacheStack.php');
     
     class AppClient {
         
@@ -18,6 +20,7 @@
             $this->client = new Client([
                 'base_uri' => self::API_URL,
                 'timeout'  => 2.0,
+                "handler"  => (new CacheStack())->stack,
             ]);
         }
     
