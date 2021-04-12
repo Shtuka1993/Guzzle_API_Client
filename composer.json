@@ -6,6 +6,6 @@
         "doctrine/cache": "^1.10"
     },
     "require-dev": {
-        "league/flysystem": "^2.0"
+        "league/flysystem": "^1.0"
     }
 }
