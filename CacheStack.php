@@ -1,18 +1,19 @@
 <?php
     use GuzzleHttp\HandlerStack;
+    use Kevinrob\GuzzleCache\CacheMiddleware;
     /*use League\Flysystem\Filesystem;
     use League\Flysystem\Adapter\Local;*/
+    //use Doctrine\
     use Doctrine\Common\Cache\FilesystemCache;
-    use Kevinrob\GuzzleCache\CacheMiddleware;
     use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
-    use Kevinrob\GuzzleCache\Storage\FlysystemStorage;
+    use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
  
     class CacheStack {
-        const CACHE_STORAGE = "/local/cache";
+        const CACHE_STORAGE = __DIR__."/local/cache/";
         private $stack;
 
         public function __construct() {
-            $this->$stack = HandlerStack::create();
+            $this->stack = HandlerStack::create();
             /*$adapter = new Local("/local/cache");
             $this->$stack->push(
                 new CacheMiddleware(

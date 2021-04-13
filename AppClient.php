@@ -20,7 +20,7 @@
             $this->client = new Client([
                 'base_uri' => self::API_URL,
                 'timeout'  => 2.0,
-                //"handler"  => (new CacheStack())->getStack(),
+                "handler"  => (new CacheStack())->getStack(),
             ]);
         }
     
