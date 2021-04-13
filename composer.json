@@ -1,0 +1,11 @@
+{
+    "require": {
+       "guzzlehttp/guzzle": "^7.0",
+       "monolog/monolog": "*",
+        "kevinrob/guzzle-cache-middleware": "^3.3",
+        "doctrine/cache": "^1.10"
+    },
+    "require-dev": {
+        "league/flysystem": "^1.0"
+    }
+}
